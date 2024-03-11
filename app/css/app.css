@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Nabla&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap");
+
+@keyframes kenBurnsEffect {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.1) translate(-2%, -2%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes pulseEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ken-burns {
+  width: 110vw;
+  height: 110vh;
+  background-size: cover;
+  background-position: center;
+  animation: kenBurnsEffect 30s ease-in-out infinite;
+}
+
+body {
+  font-family: "Jura", sans-serif;
+  background-color: black;
+}
+
+.nabla-heading {
+  font-family: "Nabla", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "EDPT" 100, "EHLT" 12;
+  animation: pulseEffect 20s ease-in-out infinite;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  outline: none;
+}
+
+select {
+  padding-right: 1.5rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

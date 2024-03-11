@@ -1,4 +1,4 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
+import { useEffect, useState } from "react";
 import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
@@ -8,12 +8,97 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import stylesheet from "./css/tailwind.css";
+import app from "./css/app.css";
+import { images } from "./utils/constants";
+import { motion } from "framer-motion";
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: app },
 ];
 
 export default function App() {
+  const [bgImage, setBgImage] = useState(images.Image1);
+  const [page, setPage] = useState(0);
+  const [day, setDay] = useState<any>(null);
+  const [month, setMonth] = useState<any>(null);
+  const [year, setYear] = useState<any>(null);
+  const [enableSubmit, setEnableSubmit] = useState(false);
+  const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [audio, setAudio] = useState<any>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleStart = () => {
+    setPage((prev) => prev + 1);
+    if (audio) {
+      const prevValue = isPlaying;
+      setIsPlaying(!prevValue);
+      audio.play();
+    }
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const response = await fetch("/animals", {
+      method: "POST",
+      body: JSON.stringify({ date }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    const { success, imageUrl, description } = data;
+    if (success) {
+      setSuccess(true);
+      setImageUrl(imageUrl);
+      setDescription(description);
+      setLoading(false);
+    }
+  };
+
+  const handleDayChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const valueNumber = Number(event.target.value);
+    setDay(valueNumber);
+  };
+
+  const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = Number(event.target.value);
+    setMonth(value);
+  };
+
+  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = Number(event.target.value);
+    setYear(value);
+  };
+
+  useEffect(() => {
+    if (day && month && year) {
+      setEnableSubmit(true);
+      const date = `${month}-${day}-${year}`;
+      setDate(date);
+    }
+  }, [day, month, year]);
+
+  // assign random bgImage each 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomImage = Math.floor(Math.random() * 8) + 1;
+      setBgImage(images[`Image${randomImage}`]);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const audioInstance = new Audio("/music.mp3");
+    setAudio(audioInstance);
+  }, []);
+
   return (
     <html lang="en">
       <head>
@@ -23,6 +108,348 @@ export default function App() {
         <Links />
       </head>
       <body>
+        {page === 0 && (
+          <div className="language-switcher fixed top-0 right-0 p-4 z-10 text-white gap-1 flex text-sm">
+            <a
+              href="/"
+              className={`${
+                language === "en" ? "text-white " : "text-gray-300"
+              }`}
+            >
+              EN
+            </a>
+            /
+            <a
+              href="/es"
+              className={`${
+                language === "es" ? "text-white " : "text-gray-500"
+              }`}
+            >
+              ES
+            </a>
+          </div>
+        )}
+        {page === 4 && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 3 }}
+            >
+              <div
+                className="ken-burns fixed z-0 w-full h-full"
+                style={{ backgroundImage: `url(img/${bgImage})` }}
+              />
+              <div
+                className={`fixed z-1 w-full h-full bg-black ${
+                  success ? "bg-opacity-75" : "bg-opacity-25"
+                }`}
+              />
+            </motion.div>
+          </>
+        )}
+        <div className="fixed z-2 w-full h-full ">
+          {page === 0 && (
+            <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3 }}
+              >
+                <h1 className="nabla-heading text-8xl text-center">
+                  Birthdate Beasts
+                </h1>
+                <h2 className="text-white text-center my-4 text-lg">
+                  Uncover Your Animal Alter-Ego
+                </h2>
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <button
+                    className="text-white font-bold text-xl py-2 px-8 border-2 border-white rounded-full my-4 hover:bg-white hover:text-black"
+                    onClick={handleStart}
+                  >
+                    START
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+          {page === 1 && (
+            <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3 }}
+              >
+                <p>
+                  Welcome to Birthdate Beasts, where we blend the mystic with
+                  the animal kingdom to offer you a glimpse into your past
+                  life's spirit animal. Ever wondered if your soul carries the
+                  wisdom of an owl, the strength of a lion, or the freedom of an
+                  eagle? Our unique experience bridges this curiosity with your
+                  birthdate to unveil which animal you were in another life.
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3, delay: 3 }}
+              >
+                <button onClick={() => setPage((prev) => prev + 1)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M6.225 1.227A7.5 7.5 0 0 1 10.5 8a7.5 7.5 0 0 1-4.275 6.773 7 7 0 1 0 0-13.546M4.187.966a8 8 0 1 1 7.627 14.069A8 8 0 0 1 4.186.964z" />
+                  </svg>
+                </button>
+              </motion.div>
+            </div>
+          )}
+          {page === 2 && (
+            <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3 }}
+              >
+                <p>
+                  Through a blend of astrology, folklore, and a dash of
+                  whimsical imagination, we've created a portal to the past,
+                  allowing you to connect with your inner beast. Your birthdate
+                  holds the key to understanding more about your inherent
+                  traits, strengths, and perhaps, even your untamed spirit.
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3, delay: 3 }}
+              >
+                <button onClick={() => setPage((prev) => prev + 1)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M6.225 1.227A7.5 7.5 0 0 1 10.5 8a7.5 7.5 0 0 1-4.275 6.773 7 7 0 1 0 0-13.546M4.187.966a8 8 0 1 1 7.627 14.069A8 8 0 0 1 4.186.964z" />
+                  </svg>
+                </button>
+              </motion.div>
+            </div>
+          )}
+          {page === 3 && (
+            <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3 }}
+              >
+                <p>
+                  So, are you ready to meet your animal counterpart and discover
+                  what it reveals about your character, your challenges, and
+                  your unique strengths? Step into this adventure with us and
+                  reveal the animal spirit that has been with you through
+                  lifetimes. Your journey of discovery begins now.
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3, delay: 3 }}
+              >
+                <button onClick={() => setPage((prev) => prev + 1)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M6.225 1.227A7.5 7.5 0 0 1 10.5 8a7.5 7.5 0 0 1-4.275 6.773 7 7 0 1 0 0-13.546M4.187.966a8 8 0 1 1 7.627 14.069A8 8 0 0 1 4.186.964z" />
+                  </svg>
+                </button>
+              </motion.div>
+            </div>
+          )}
+          {page === 4 && (
+            <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white">
+              {success && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 3 }}
+                >
+                  <h3 className="text-center my-4 font-bold text-xl">
+                    Your alter ego has been revealed!
+                  </h3>
+                  <div className="image w-full max-w-[600px] h-[400px] bg-white rounded-lg mx-auto mb-4">
+                    <a href={imageUrl} target="_blank">
+                      <img
+                        src={imageUrl}
+                        alt="Animal"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </a>
+                  </div>
+                  <div className="description text-center">
+                    <p>{description}</p>
+                  </div>
+                </motion.div>
+              )}
+              {!success && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 3 }}
+                >
+                  {!loading && (
+                    <>
+                      <h3 className="text-center my-4 font-bold text-xl">
+                        Enter your birthdate
+                      </h3>
+                      <div className="flex text-center border-4 border-white rounded-full">
+                        <select
+                          className="w-[120px] text-center p-4 bg-transparent font-bold text-white text-2xl border-r-4 border-white"
+                          name="day"
+                          onChange={handleDayChange}
+                          defaultValue={""}
+                        >
+                          <option value="" disabled>
+                            Day
+                          </option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                          <option value="24">24</option>
+                          <option value="25">25</option>
+                          <option value="26">26</option>
+                          <option value="27">27</option>
+                          <option value="28">28</option>
+                          <option value="29">29</option>
+                          <option value="30">30</option>
+                          <option value="31">31</option>
+                        </select>
+                        <select
+                          className="w-[200px] text-center p-4 bg-transparent font-bold text-white text-2xl"
+                          name="month"
+                          onChange={handleMonthChange}
+                          defaultValue={""}
+                        >
+                          <option value="" disabled>
+                            Month
+                          </option>
+                          <option value="1">January</option>
+                          <option value="2">February</option>
+                          <option value="3">March</option>
+                          <option value="4">April</option>
+                          <option value="5">May</option>
+                          <option value="6">June</option>
+                          <option value="7">July</option>
+                          <option value="8">August</option>
+                          <option value="9">September</option>
+                          <option value="10">October</option>
+                          <option value="11">November</option>
+                          <option value="12">December</option>
+                        </select>
+                        <select
+                          className="w-[120px] text-center p-4 bg-transparent font-bold text-white text-2xl border-l-4 border-white"
+                          name="year"
+                          onChange={handleYearChange}
+                          defaultValue={""}
+                        >
+                          <option value="" disabled>
+                            Year
+                          </option>
+                          <option value="1970">1970</option>
+                          <option value="1971">1971</option>
+                          <option value="1972">1972</option>
+                          <option value="1973">1973</option>
+                          <option value="1974">1974</option>
+                          <option value="1975">1975</option>
+                          <option value="1976">1976</option>
+                          <option value="1977">1977</option>
+                          <option value="1978">1978</option>
+                          <option value="1979">1979</option>
+                          <option value="1980">1980</option>
+                          <option value="1981">1981</option>
+                          <option value="1982">1982</option>
+                          <option value="1983">1983</option>
+                          <option value="1984">1984</option>
+                          <option value="1985">1985</option>
+                          <option value="1986">1986</option>
+                          <option value="1987">1987</option>
+                          <option value="1988">1988</option>
+                          <option value="1989">1989</option>
+                          <option value="1990">1990</option>
+                          <option value="1991">1991</option>
+                          <option value="1992">1992</option>
+                          <option value="1993">1993</option>
+                          <option value="1994">1994</option>
+                          <option value="1995">1995</option>
+                          <option value="1996">1996</option>
+                          <option value="1997">1997</option>
+                          <option value="1998">1998</option>
+                          <option value="1999">1999</option>
+                          <option value="2000">2000</option>
+                          <option value="2001">2001</option>
+                          <option value="2002">2002</option>
+                          <option value="2003">2003</option>
+                          <option value="2004">2004</option>
+                          <option value="2005">2005</option>
+                          <option value="2006">2006</option>
+                          <option value="2007">2007</option>
+                          <option value="2008">2008</option>
+                          <option value="2009">2009</option>
+                          <option value="2010">2010</option>
+                          <option value="2011">2011</option>
+                          <option value="2012">2012</option>
+                        </select>
+                      </div>
+                    </>
+                  )}
+                  <div className="flex flex-col items-center justify-center gap-4 my-4">
+                    <button
+                      onClick={handleSubmit}
+                      className={`bg-white text-black py-2 px-8 rounded-full font-bold text-sm ${
+                        enableSubmit
+                          ? "cursor-pointer hover:bg-black hover:text-white"
+                          : "cursor-not-allowed bg-gray-600 text-gray-500"
+                      }`}
+                      disabled={!enableSubmit || loading}
+                    >
+                      {loading ? "Generating..." : "Discover"}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          )}
+        </div>
         <Outlet />
         <ScrollRestoration />
         <Scripts />

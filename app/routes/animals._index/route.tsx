@@ -59,7 +59,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     {
       headers: {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
+        "content-type": "application/json",
       },
     }
   );

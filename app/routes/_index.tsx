@@ -57,7 +57,7 @@ export default function Index() {
       method: "POST",
       body: JSON.stringify({ email, date, ip }),
       headers: {
-        "Content-Type": "application/json",
+        "content-type": "application/json",
       },
     });
     const data = await response.json();

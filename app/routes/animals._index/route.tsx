@@ -26,13 +26,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     },
   });
 
-  // Getting data from database
-  if (userExists || userExistsIp) {
+  // User exists
+  if (userExists) {
     return json({
       success: true,
       message: "User already exists",
       user: userExists,
       description: userExists.description,
+    });
+  }
+
+  // IP exists
+  if (userExistsIp) {
+    return json({
+      success: true,
+      message: "User already exists",
+      user: userExistsIp,
+      description: "",
     });
   }
 
@@ -66,6 +76,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   // PRODUCTION
+  console.log("User created");
   return json({
     success: true,
     user,

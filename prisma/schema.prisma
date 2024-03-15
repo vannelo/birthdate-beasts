@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// define a user model with a unique email, birthdate, name and ip
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  date      String
+  name      String
+  ip        String
+  imageUrl  String
+  description String
+}

@@ -158,4 +158,9 @@ export const images: any = {
   Image6: "bg-6.jpg",
   Image7: "bg-7.jpg",
   Image8: "bg-8.jpg",
+  Image9: "bg-9.jpg",
+  Image10: "bg-10.jpg",
+  Image11: "bg-11.jpg",
+  Image12: "bg-12.jpg",
+  Image13: "bg-13.jpg",
 };

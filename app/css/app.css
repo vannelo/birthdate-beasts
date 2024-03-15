@@ -34,8 +34,20 @@
 }
 
 body {
-  font-family: "Jura", sans-serif;
+  font-family: "Jura", sans-serif !important;
   background-color: black;
+}
+h2,
+h3,
+h4,
+p,
+a,
+input,
+select,
+textarea,
+button,
+label {
+  font-family: "Jura", sans-serif !important;
 }
 
 .nabla-heading {

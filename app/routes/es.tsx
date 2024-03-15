@@ -29,7 +29,7 @@ export default function Index() {
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("es");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [audio, setAudio] = useState<any>(null);
@@ -164,14 +164,14 @@ export default function Index() {
                 Birthdate Beasts AI
               </h1>
               <h2 className="text-white text-center my-4 text-lg">
-                Uncover Your Animal Alter-Ego
+                Descubre Tu Alter-Ego Animal
               </h2>
               <div className="flex flex-col items-center justify-center gap-4">
                 <button
                   className="text-white font-bold text-xl py-2 px-8 border-2 border-white rounded-full my-4 hover:bg-white hover:text-black"
                   onClick={handleStart}
                 >
-                  START
+                  COMENZAR
                 </button>
               </div>
             </motion.div>
@@ -185,12 +185,13 @@ export default function Index() {
               transition={{ duration: 3 }}
             >
               <p>
-                Welcome to Birthdate Beasts, where we blend the mystic with the
-                animal kingdom to offer you a glimpse into your past life's
-                spirit animal. Ever wondered if your soul carries the wisdom of
-                an owl, the strength of a lion, or the freedom of an eagle? Our
-                unique experience bridges this curiosity with your birthdate to
-                unveil which animal you were in another life.
+                Bienvenido a Birthday Beasts AI, donde fusionamos lo místico con
+                el reino animal para ofrecerte una visión de tu espíritu animal
+                en una vida pasada. ¿Alguna vez te has preguntado si tu alma
+                lleva la sabiduría de un búho, la fuerza de un león o la
+                libertad de un águila? Nuestra experiencia única hace un puente
+                entre esta curiosidad y tu fecha de nacimiento para desvelar qué
+                animal fuiste en otra vida.
               </p>
             </motion.div>
             <motion.div
@@ -220,11 +221,11 @@ export default function Index() {
               transition={{ duration: 3 }}
             >
               <p>
-                Through a blend of astrology, folklore, and a dash of whimsical
-                imagination, we've created a portal to the past, allowing you to
-                connect with your inner beast. Your birthdate holds the key to
-                understanding more about your inherent traits, strengths, and
-                perhaps, even your untamed spirit.
+                A través de una mezcla de astrología, folklore y un toque de
+                imaginación, hemos creado un portal al pasado, permitiéndote
+                conectar con tu bestia interior. Tu fecha de nacimiento es la
+                clave para entender más sobre tus rasgos inherentes, fortalezas
+                y quizás, incluso tu espíritu indomable.
               </p>
             </motion.div>
             <motion.div
@@ -254,11 +255,11 @@ export default function Index() {
               transition={{ duration: 3 }}
             >
               <p>
-                So, are you ready to meet your animal counterpart and discover
-                what it reveals about your character, your challenges, and your
-                unique strengths? Step into this adventure with us and reveal
-                the animal spirit that has been with you through lifetimes. Your
-                journey of discovery begins now.
+                Entonces, ¿estás listo para conocer a tu contraparte animal y
+                descubrir lo que revela sobre tu carácter, tus desafíos y tus
+                fortalezas únicas? Entra en esta aventura con nosotros y revela
+                el espíritu animal que ha estado contigo a través de las vidas.
+                Tu viaje de descubrimiento comienza ahora.
               </p>
             </motion.div>
             <motion.div
@@ -281,7 +282,7 @@ export default function Index() {
           </div>
         )}
         {page === 4 && (
-          <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white">
+          <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white p-10">
             {success && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -289,7 +290,7 @@ export default function Index() {
                 transition={{ duration: 3 }}
               >
                 <h3 className="text-center my-4 font-bold text-4xl">
-                  Your alter ego has been revealed!
+                  Tu Alter-Ego ha sido revelado
                 </h3>
                 <div className="image w-full max-w-[600px] h-[400px] bg-white rounded-lg mx-auto mb-4">
                   <a href={imageUrl} target="_blank">
@@ -314,7 +315,7 @@ export default function Index() {
                 {!loading && (
                   <>
                     <h3 className="text-center my-4 font-bold text-xl">
-                      Enter your email & birthdate
+                      Ingresa tu fecha de nacimiento
                     </h3>
                     <div className="flex text-center border-4 border-white rounded-full">
                       <input
@@ -331,7 +332,7 @@ export default function Index() {
                         defaultValue={""}
                       >
                         <option value="" disabled>
-                          Day
+                          Día
                         </option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -372,7 +373,7 @@ export default function Index() {
                         defaultValue={""}
                       >
                         <option value="" disabled>
-                          Month
+                          Mes
                         </option>
                         <option value="1">January</option>
                         <option value="2">February</option>
@@ -394,7 +395,7 @@ export default function Index() {
                         defaultValue={""}
                       >
                         <option value="" disabled>
-                          Year
+                          Año
                         </option>
                         <option value="1970">1970</option>
                         <option value="1971">1971</option>

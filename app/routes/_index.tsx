@@ -34,6 +34,8 @@ export default function Index() {
   const [imageUrl, setImageUrl] = useState("");
   const [audio, setAudio] = useState<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleStart = () => {
     setPage((prev) => prev + 1);
@@ -46,6 +48,13 @@ export default function Index() {
 
   const handleSubmit = async () => {
     setLoading(true);
+
+    // if inputs are empty
+    if (!email || !day || !month || !year) {
+      setLoading(false);
+      setError(true);
+      return;
+    }
 
     // get IP
     const ipResponse = await fetch("https://api.ipify.org?format=json");
@@ -98,7 +107,6 @@ export default function Index() {
     }
   }, [day, month, year]);
 
-  // assign random bgImage each 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       const randomImage = Math.floor(Math.random() * 12) + 1;
@@ -110,6 +118,13 @@ export default function Index() {
   useEffect(() => {
     const audioInstance = new Audio("/music.mp3");
     setAudio(audioInstance);
+  }, []);
+
+  useEffect(() => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      setIsMobileDevice(true);
+    }
   }, []);
 
   return (
@@ -152,17 +167,23 @@ export default function Index() {
           </motion.div>
         </>
       )}
-      <div className="fixed z-2 w-full h-full ">
+      <div className="fixed z-2 w-full h-full">
         {page === 0 && (
-          <div className="content flex flex-col items-center justify-center h-full p-20 max-w-[1000px] mx-auto gap-4 ">
+          <div className="content flex flex-col items-center justify-center h-full p-20 max-w-[1000px] mx-auto gap-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 3 }}
             >
-              <h1 className="nabla-heading text-5xl md:text-8xl text-center">
-                Birthdate Beasts AI
-              </h1>
+              {isMobileDevice ? (
+                <h1 className="text-5xl md:text-8xl text-center text-white font-bold drop-shadow-[0_35px_35px_rgba(255,255,255,1)]">
+                  Birthdate Beasts AI
+                </h1>
+              ) : (
+                <h1 className="nabla-heading text-5xl md:text-8xl text-center">
+                  Birthdate Beasts AI
+                </h1>
+              )}
               <h2 className="text-white text-center my-4 text-lg">
                 Uncover Your Animal Alter-Ego
               </h2>
@@ -281,17 +302,17 @@ export default function Index() {
           </div>
         )}
         {page === 4 && (
-          <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white">
+          <div className="content flex flex-col items-center justify-center h-full max-w-[1000px] mx-auto gap-4 text-white p-10">
             {success && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 3 }}
               >
-                <h3 className="text-center my-4 font-bold text-4xl">
+                <h3 className="text-center my-4 font-bold text-2xl md:text-4xl">
                   Your alter ego has been revealed!
                 </h3>
-                <div className="image w-full max-w-[600px] h-[400px] bg-white rounded-lg mx-auto mb-4">
+                <div className="image w-full max-w-[600px] h-[200px] md:h-[350px] bg-white rounded-lg mx-auto mb-4">
                   <a href={imageUrl} target="_blank">
                     <img
                       src={imageUrl}
@@ -441,6 +462,11 @@ export default function Index() {
                         <option value="2012">2012</option>
                       </select>
                     </div>
+                    {error && (
+                      <p className="text-center text-red-500 text-sm font-bold my-4">
+                        Please fill in all fields
+                      </p>
+                    )}
                   </>
                 )}
                 <div className="flex flex-col items-center justify-center gap-4 my-4">

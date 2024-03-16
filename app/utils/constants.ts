@@ -1,6 +1,6 @@
 export const animals: any = {
   Animal1: "phoenix",
-  Animal2: "dragon.",
+  Animal2: "dragon",
   Animal3: "cat",
   Animal4: "unicorn",
   Animal5: "lion",

@@ -466,7 +466,7 @@ export default function Index() {
                     </div>
                     {error && (
                       <p className="text-center text-red-500 text-sm font-bold my-4">
-                        Please fill in all fields
+                        Por favor, completa todos los campos
                       </p>
                     )}
                   </>
@@ -481,7 +481,9 @@ export default function Index() {
                     }`}
                     disabled={!enableSubmit || loading}
                   >
-                    {loading ? "Generating..." : "Discover"}
+                    {loading
+                      ? "Generando, no cierres ni actualices el sitio..."
+                      : "Descubrir"}
                   </button>
                 </div>
               </motion.div>

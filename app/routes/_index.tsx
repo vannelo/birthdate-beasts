@@ -479,7 +479,9 @@ export default function Index() {
                     }`}
                     disabled={!enableSubmit || loading}
                   >
-                    {loading ? "Generating..." : "Discover"}
+                    {loading
+                      ? "Generating, don't close or refresh the page..."
+                      : "Discover"}
                   </button>
                 </div>
               </motion.div>

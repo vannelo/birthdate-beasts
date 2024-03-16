@@ -9,10 +9,10 @@ const REGION = "us-east-1";
 const s3Client = new S3Client({
   region: REGION,
   credentials: {
-    accessKeyId: "AKIAW5ZJRRML4QYNI5PL",
-    secretAccessKey: "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",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID as any,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as any,
   },
-});
+}) as any;
 
 const prisma = new PrismaClient();
 

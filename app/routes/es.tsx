@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const [bgImage, setBgImage] = useState(images.Image1);
+  const [bgImage, setBgImage] = useState("");
   const [page, setPage] = useState(0);
   const [email, setEmail] = useState("");
   const [day, setDay] = useState<any>(null);
@@ -139,7 +139,7 @@ export default function Index() {
       }, 7000);
       return () => clearInterval(interval);
     }
-  }, [files]);
+  }, [files, filesCount]);
 
   useEffect(() => {
     const audioInstance = new Audio("/music.mp3");

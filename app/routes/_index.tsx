@@ -133,7 +133,6 @@ export default function Index() {
 
   useEffect(() => {
     if (files.length > 0) {
-      console.log("here");
       const interval = setInterval(() => {
         const randomImage = Math.floor(Math.random() * filesCount) + 1;
         setBgImage(files[randomImage].name);
@@ -153,10 +152,6 @@ export default function Index() {
       setIsMobileDevice(true);
     }
   }, []);
-
-  console.log("files", files);
-  console.log("filesCount", filesCount);
-  console.log("bgImage", bgImage);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>

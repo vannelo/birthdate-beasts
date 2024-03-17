@@ -154,6 +154,7 @@ export default function Index() {
   }, []);
 
   console.log("files", files);
+  console.log("filesCount", filesCount);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>

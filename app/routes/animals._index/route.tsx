@@ -109,19 +109,4 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     console.log("Error", err);
     throw new Error("File upload failed");
   }
-
-  // DEVELOPMENT
-  // return json({
-  //   success: true,
-  //   user: {
-  //     email,
-  //     name,
-  //     date: dateString,
-  //     ip,
-  //     imageUrl: "https://picsum.photos/1024",
-  //     description: animalData.description,
-  //   },
-  //   description: "description",
-  //   message: "Work done!",
-  // });
 };

@@ -153,6 +153,8 @@ export default function Index() {
     }
   }, []);
 
+  console.log("files", files);
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       {page === 0 && (

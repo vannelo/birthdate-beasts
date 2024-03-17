@@ -20,6 +20,7 @@
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
     "@vercel/postgres": "^0.7.2",
+    "aws-sdk": "^2.1579.0",
     "axios": "^1.6.7",
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.8",

@@ -36,6 +36,24 @@ export default function Index() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [error, setError] = useState(false);
+  const [files, setFiles] = useState<any>([]);
+  const [filesCount, setFilesCount] = useState(0);
+
+  useEffect(() => {
+    async function fetchFiles() {
+      const response = await fetch("/files");
+      const fileList = await response.json();
+      setFiles(fileList);
+    }
+
+    fetchFiles();
+  }, []);
+
+  useEffect(() => {
+    if (files.length > 0) {
+      setFilesCount(files.length);
+    }
+  }, [files]);
 
   const handleStart = () => {
     setPage((prev) => prev + 1);
@@ -109,8 +127,8 @@ export default function Index() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const randomImage = Math.floor(Math.random() * 12) + 1;
-      setBgImage(images[`Image${randomImage}`]);
+      const randomImage = Math.floor(Math.random() * filesCount) + 1;
+      setBgImage(files[randomImage].name);
     }, 7000);
     return () => clearInterval(interval);
   }, []);
@@ -157,7 +175,9 @@ export default function Index() {
           >
             <div
               className="ken-burns fixed z-0 w-full h-full"
-              style={{ backgroundImage: `url(img/${bgImage})` }}
+              style={{
+                backgroundImage: `url(https://birthdate-beasts-s3.s3.amazonaws.com/${bgImage})`,
+              }}
             />
             <div
               className={`fixed z-1 w-full h-full bg-black ${
@@ -334,6 +354,15 @@ export default function Index() {
               >
                 {!loading && (
                   <>
+                    {isMobileDevice ? (
+                      <h1 className="text-5xl md:text-8xl text-center text-white font-bold drop-shadow-[0_35px_35px_rgba(255,255,255,1)]">
+                        Birthdate Beasts AI
+                      </h1>
+                    ) : (
+                      <h1 className="nabla-heading text-3xl md:text-8xl text-center">
+                        Birthdate Beasts AI
+                      </h1>
+                    )}
                     <h3 className="text-center my-4 font-bold text-xl">
                       Enter your email & birthdate
                     </h3>

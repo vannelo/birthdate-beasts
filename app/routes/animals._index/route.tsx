@@ -19,7 +19,7 @@ const prisma = new PrismaClient();
 export const action = async ({ request }: ActionFunctionArgs) => {
   // Organizing data
   const data = await request.json();
-  const { email, date, ip } = data;
+  const { email, date, ip, successValue } = data;
   const dateString = new Date(date).toDateString();
   const name = email.split("@")[0];
   const animalData = getAnimalData(date);
@@ -38,7 +38,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   // User exists
-  if (userExists) {
+  if (userExists || successValue) {
     return json({
       success: true,
       message: "User already exists",

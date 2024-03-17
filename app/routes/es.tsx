@@ -67,6 +67,9 @@ export default function Index() {
   const handleSubmit = async () => {
     setLoading(true);
 
+    // see if success value is in localstorage
+    const successValue = localStorage.getItem("success");
+
     // if inputs are empty
     if (!email || !day || !month || !year) {
       setLoading(false);
@@ -82,7 +85,7 @@ export default function Index() {
     // post to AI
     const response = await fetch("/animals", {
       method: "POST",
-      body: JSON.stringify({ email, date, ip }),
+      body: JSON.stringify({ email, date, ip, successValue }),
       headers: {
         "content-type": "application/json",
       },
@@ -95,6 +98,9 @@ export default function Index() {
       description,
     } = data;
     if (success) {
+      // add localstorage item with a success value
+      localStorage.setItem("success", "true");
+
       setSuccess(true);
       setImageUrl(imageUrl);
       setDescription(description);
@@ -126,12 +132,14 @@ export default function Index() {
   }, [day, month, year]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const randomImage = Math.floor(Math.random() * filesCount) + 1;
-      setBgImage(files[randomImage].name);
-    }, 7000);
-    return () => clearInterval(interval);
-  }, []);
+    if (files.length > 0) {
+      const interval = setInterval(() => {
+        const randomImage = Math.floor(Math.random() * filesCount) + 1;
+        setBgImage(files[randomImage].name);
+      }, 7000);
+      return () => clearInterval(interval);
+    }
+  }, [files]);
 
   useEffect(() => {
     const audioInstance = new Audio("/music.mp3");

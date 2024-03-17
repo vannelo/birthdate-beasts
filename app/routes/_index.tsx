@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const [bgImage, setBgImage] = useState(images.Image1);
+  const [bgImage, setBgImage] = useState("");
   const [page, setPage] = useState(0);
   const [email, setEmail] = useState("");
   const [day, setDay] = useState<any>(null);

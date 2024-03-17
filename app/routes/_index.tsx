@@ -133,13 +133,14 @@ export default function Index() {
 
   useEffect(() => {
     if (files.length > 0) {
+      console.log("here");
       const interval = setInterval(() => {
         const randomImage = Math.floor(Math.random() * filesCount) + 1;
         setBgImage(files[randomImage].name);
       }, 7000);
       return () => clearInterval(interval);
     }
-  }, [files]);
+  }, [files, filesCount]);
 
   useEffect(() => {
     const audioInstance = new Audio("/music.mp3");
@@ -155,6 +156,7 @@ export default function Index() {
 
   console.log("files", files);
   console.log("filesCount", filesCount);
+  console.log("bgImage", bgImage);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
